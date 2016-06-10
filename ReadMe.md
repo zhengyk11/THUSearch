@@ -8,7 +8,8 @@ THU Search
 
 - 配置方法
 
-  运行indexWriter生成索引，放到tomcat/bin目录下，随后运行tomcat即可
+  - 下载庖丁解牛分词器，修改src目录下的paoding-dic-home.properties中对应分词器路径
+  - 运行indexWriter生成索引，放到tomcat/bin目录下，随后运行tomcat即可
 
 
 - 暂时实现的功能
