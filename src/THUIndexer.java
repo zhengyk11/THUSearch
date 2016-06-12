@@ -68,7 +68,7 @@ public class THUIndexer {
 
 
                 Field titleField = new Field( "title", title.getNodeValue(), Field.Store.YES, Field.Index.ANALYZED);
-                Field urlField = new Field( "url", url.getNodeValue(),Field.Store.YES, Field.Index.NO);
+                Field urlField = new Field( "url", url.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
                 Field h1Field = new Field( "h1", h1.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
                 Field prField = new Field( "pr", pr.getNodeValue(),Field.Store.YES, Field.Index.NO);
                 Field contentField = new Field( "content" ,content.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);

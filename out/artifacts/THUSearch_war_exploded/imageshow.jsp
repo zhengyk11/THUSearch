@@ -52,10 +52,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <img src="image/thu.PNG" style="padding-left: 5px;padding-top: 5px;height: 32px;width: 110px" alt="logo"/>
 </div>--%>
 
-<div style="width: 540px;padding-left: 125px;">
+<div style="width: 580px;padding-left: 125px;">
   <form id="form1" name="form1" method="get" action="THUServer">
     <label>
-      <input style="width: 400px;margin: 10px;height: 35px;font-family: arial;font-size: 10pt;color: #444;" name="query" value="<%=currentQuery%>" type="text" size="70" />
+      <input style="width: 440px;margin: 10px;height: 35px;font-family: arial;font-size: 10pt;color: #444;" name="query" value="<%=currentQuery%>" type="text" size="70" />
     </label>
     <label>
     <button style="-webkit-appearance: none;font-family: arial;
@@ -69,21 +69,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </label>
   </form>
 </div>
+<%
+    String[] titles=(String[]) request.getAttribute("imgTags");
+    String[] urlPaths=(String[]) request.getAttribute("imgPaths");
+    String[] contents = (String[]) request.getAttribute("contents");
+    int totalNum = (int) request.getAttribute("totalNum");
+    long times = (long) request.getAttribute("times");
+    System.out.println("totalNum="+totalNum);
+%>
+
 <div id="Layer2" style="top: 100px; height: 585px;">
-  <div style="width: 540px;padding-left: 121px;padding-top: 5px;" id="imagediv">结果显示如下：
+  <div style="width: 540px;padding-left: 121px;padding-top: 5px;" id="imagediv">
+	  <a style="font-size: 13px;color: #999;">共<%=totalNum%>个结果,耗时<%=times%>毫秒,具体如下:</a>
   <br>
-  <Table style="left: 0px; width: 594px;">
-  <% 
-  	String[] titles=(String[]) request.getAttribute("imgTags");
-  	String[] urlPaths=(String[]) request.getAttribute("imgPaths");
-      String[] contents = (String[]) request.getAttribute("contents");
-      int totalNum = (int) request.getAttribute("totalNum");
-      System.out.println("totalNum="+totalNum);
+  <Table style="left: 0px; width: 594px;padding-top: 5px;">
+  <%
   	if(titles!=null && titles.length>0){
   		for(int i=0;i<titles.length;i++){%>
       <p>
   		<tr><h3><a style="color: -webkit-link;text-decoration: underline;cursor: auto;" href="http://<%=urlPaths[i]%>" target="_blank"><%=(currentPage-1)*10+i+1%>. <%=titles[i] %></a></h3></tr>
-		<tr><p style="margin: 0;padding: 0;list-style: none;font-size: 13px;color: #666;padding-bottom: 5px"><%=contents[i] == null? "":contents[i]+"..."%></p></tr>
+		<tr><p style="margin: 0;padding: 0;list-style: none;font-size: 13px;color: #666;padding-bottom: 5px"><%=contents[i] == null ? "":contents[i]+"..."%></p></tr>
         <tr><a href="http://<%=urlPaths[i]%>" target="_blank" style="text-decoration: none; color: #008000;font-size: 13px;"><%=urlPaths[i].length()>70?urlPaths[i].substring(0,60)+"...":urlPaths[i]%></a></tr>
       </p>
   		<%}; %>
