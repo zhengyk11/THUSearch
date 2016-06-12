@@ -25,7 +25,7 @@ public class THUServer extends HttpServlet{
 
     public static final int PAGE_RESULT = 10;
     public static final String indexDir = "forIndex";
-    private String[] field = new String[]{"title","h1","anchor","content","strong"};
+    private String[] field = new String[]{"title","h1","anchor","content","strong","url"};
     //public static final String http = "http://";
     private THUSearcher search = null;
 
