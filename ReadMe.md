@@ -21,6 +21,7 @@ THU Search
   - 逻辑查询：AND / OR / NOT
   - 模糊查询：query + “~”
   - 使用lucene默认的score算法(VSM模型)，并考虑了PageRank
+  - 特殊考虑了对url的检索，使用正则表达式
 
 
 - 待实现功能
