@@ -20,12 +20,13 @@ THU Search
   - 搜索关键词高亮
   - 逻辑查询：AND / OR / NOT
   - 模糊查询：query + “~”
+  - 使用lucene默认的score算法(VSM模型)，并考虑了PageRank
 
 
 - 待实现功能
   - 解析doc / pdf
   - 查询纠错和查询提示
-  - 不同的score算法，目前没有考虑pagerank
+  - 不同的score算法(如bm25等)
   - 更好的前端风格和功能
 
 
