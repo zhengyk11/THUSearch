@@ -254,6 +254,7 @@ public class THUServer extends HttpServlet{
         request.setAttribute("imgPaths", highlightURLs);
         request.setAttribute("contents", highlightContents);
         request.setAttribute("times", t2-t1);
+        request.setAttribute("queryString", queryString);
         request.getRequestDispatcher("/imageshow.jsp").forward(request,
                 response);
 
