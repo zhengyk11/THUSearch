@@ -5,6 +5,8 @@ response.setCharacterEncoding("utf-8");
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 //String imagePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
+//System.out.println("basePath:"+basePath);
+//System.out.println("imagePath:"+imagePath);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -48,14 +50,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	int currentPage=(Integer) request.getAttribute("currentPage");
 %>
 
-<%--<div>
-    <img src="image/thu.PNG" style="padding-left: 5px;padding-top: 5px;height: 32px;width: 110px" alt="logo"/>
+<%--<div style="width: 120px;padding-left: 125px;">
+
+    &lt;%&ndash;<img src="image/thu.PNG" style="padding-left: 5px;padding-top: 5px;height: 32px;width: 110px" alt="logo"/>&ndash;%&gt;
 </div>--%>
 
-<div style="width: 580px;padding-left: 125px;">
+<div style="width: 1000px;padding-left: 0px;">
   <form id="form1" name="form1" method="get" action="THUServer">
-    <label>
-      <input style="width: 440px;margin: 10px;height: 35px;font-family: arial;font-size: 10pt;color: #444;" name="query" value="<%=currentQuery%>" type="text" size="70" />
+      <label>
+      <img src="<%=basePath%>image/thu1.png" alt="thu" style="width:145px;height:50px;vertical-align:middle;padding-right: 5px" />
+      </label>
+      <label>
+      <input style="width: 440px;margin: 10px;margin-left: 0px;height: 35px;font-family: arial;font-size: 10pt;color: #444;" name="query" value="<%=currentQuery%>" type="text" size="70" />
     </label>
     <label>
     <button style="-webkit-appearance: none;font-family: arial;
@@ -63,7 +69,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     background-color: #f5f5f5;
     border: 1px #e4e4e4;
     font-weight: bold;
-    margin: 25px 5px;
+    margin: 5px 0px;
     font-size: 9pt;
     padding: 12px;" type="submit" name="Submit">THU Search</button>
     </label>
@@ -78,16 +84,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     System.out.println("totalNum="+totalNum);
 %>
 
-<div id="Layer2" style="top: 100px; height: 585px;">
-  <div style="width: 540px;padding-left: 121px;padding-top: 5px;" id="imagediv">
-	  <a style="font-size: 13px;color: #999;">共<%=totalNum%>个结果,耗时<%=times%>毫秒,具体如下:</a>
+<div id="Layer2" style="top: 80px; height: 585px;">
+  <div style="width: 540px;padding-left: 135px;padding-top: 5px;" id="imagediv">
+	  <a style="font-size: 13px;color: #999;">THU Search Engine为您找到相关结果约<%=totalNum%>个结果,耗时<%=times%>毫秒</a>
   <br>
   <Table style="left: 0px; width: 594px;padding-top: 5px;">
   <%
   	if(titles!=null && titles.length>0){
   		for(int i=0;i<titles.length;i++){%>
       <p>
-  		<tr><h3><a style="color: -webkit-link;text-decoration: underline;cursor: auto;" href="http://<%=urlPaths[i]%>" target="_blank"><%=(currentPage-1)*10+i+1%>. <%=titles[i] %></a></h3></tr>
+  		<tr><h3><a style="color: -webkit-link;text-decoration: underline;cursor: auto;" href="http://<%=urlPaths[i]%>" target="_blank"><%=(currentPage-1)*10+i+1%>. <%=titles[i].length()>100 ? titles[i].substring(0,100):titles[i] %></a></h3></tr>
 		<tr><p style="margin: 0;padding: 0;list-style: none;font-size: 13px;color: #666;padding-bottom: 5px"><%=contents[i] == null ? "":contents[i]+"..."%></p></tr>
         <tr><a href="http://<%=urlPaths[i]%>" target="_blank" style="text-decoration: none; color: #008000;font-size: 13px;"><%=urlPaths[i].length()>70?urlPaths[i].substring(0,60)+"...":urlPaths[i]%></a></tr>
       </p>
@@ -97,7 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<%}; %>
   </Table>
   </div>
-  <div style="padding-left: 130px;padding-bottom: 35px;">
+  <div style="padding-left: 140px;padding-bottom: 35px;">
   	<p>
 		<%if(currentPage>1){ %>
 			<a href="THUServer?query=<%=currentQuery%>&page=<%=currentPage-1%>">上一页</a>

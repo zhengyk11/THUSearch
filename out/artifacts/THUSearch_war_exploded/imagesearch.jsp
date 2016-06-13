@@ -6,8 +6,8 @@ response.setCharacterEncoding("utf-8");
 //System.out.println(response.getCharacterEncoding());top: 210px; left: 353px; width: 441px;
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-System.out.println(path);
-System.out.println(basePath);
+//System.out.println(path);
+//System.out.println(basePath);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -41,9 +41,11 @@ System.out.println(basePath);
     text-align: center;
     vertical-align: middle;
     margin-top: 200px;">
-  <form id="form1" name="form1" method="get" action="servlet/THUServer">
+	<img src="<%=basePath%>image/thu.png" alt="logo" style="width:300px;height:65px;horiz-align:center;padding-right: 0px" />
 
-      <input style="width: 400px;margin: 10px;height: 35px;font-family: arial;font-size: 10pt;color: #444;" name="query" type="text" size="50" />
+	<form id="form1" name="form1" method="get" action="servlet/THUServer">
+
+      <input style="width: 450px;margin: 10px;height: 35px;font-family: arial;font-size: 10pt;color: #444;" name="query" type="text" size="50" />
 
     <%--<form id="form2" name="form1" method="get" action="servlet/THUServer">
     --%>
@@ -52,7 +54,7 @@ System.out.println(basePath);
     background-color: #f5f5f5;
     border: 1px #e4e4e4;
     font-weight: bold;
-    margin: 25px 5px;
+    margin: 15px 0px;
     font-size: 9pt;
     padding: 12px;" type="submit" name="Submit">THU Search</button>
   </form>

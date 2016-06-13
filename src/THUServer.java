@@ -117,7 +117,7 @@ public class THUServer extends HttpServlet{
             boosts.put("strong", 0.3f);
             boosts.put("h1", 0.5f);
             boosts.put("anchor", 0.3f);
-            boosts.put("url", 5.0f);
+            boosts.put("url", 10.0f);
             parser = new MultiFieldQueryParser(
                     Version.LUCENE_35,
                     field,
@@ -155,7 +155,7 @@ public class THUServer extends HttpServlet{
         //让大小生效
         highlighter.setTextFragmenter(fragmenter);
 
-        TopDocs results = search.searchQuery(query, Math.abs(new Random().nextInt())%300 + 500);
+        TopDocs results = search.searchQuery(query, 1000);//Math.abs(new Random().nextInt())%300 + 500);
 
         int totalNum = 0;
 
