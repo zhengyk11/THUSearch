@@ -98,7 +98,9 @@ public class THUServer extends HttpServlet{
         String pattern = "([a-zA-Z0-9\\.\\-]+(\\:[a-zA-Z0-9\\.&amp;%\\$\\-]+)*@)?((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+\\.[a-zA-Z]{2,4})(\\:[0-9]+)?(/[^/][a-zA-Z0-9\\.\\,\\?\\'\\/\\+&amp;%\\$#\\=~_\\-@]*)*$";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(queryString);
+        int flag = 1;
         if(m.find()){
+            flag = 1;
             boosts.clear();
             boosts.put("url", 1.0f);
             System.out.println("m.find");
@@ -111,6 +113,7 @@ public class THUServer extends HttpServlet{
                     boosts );
         }
         else {
+            flag = 0;
             boosts.clear();
             boosts.put("title", 5.0f);
             boosts.put("content", 0.1f);
@@ -125,6 +128,7 @@ public class THUServer extends HttpServlet{
                 boosts );*/
                     new PaodingAnalyzer(),
                     boosts );
+            //queryString += "~";
         }
 
         /**用MultiFieldQueryParser类实现对同一关键词的跨域搜索
@@ -133,7 +137,9 @@ public class THUServer extends HttpServlet{
 
         Query query = null;
         try {
+
             query = parser.parse(queryString);
+            queryString = queryString.replaceAll("~","");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -164,6 +170,12 @@ public class THUServer extends HttpServlet{
             Map<Integer, Double> prMap = new HashMap<>();
             for(int i = 0;i < totalNum;i++){
                 double s = results.scoreDocs[i].score + results.scoreDocs[i].score * 10000 * Double.parseDouble(search.getDoc(results.scoreDocs[i].doc).get("pr"));
+                String url_tmp = ((String)(search.getDoc(results.scoreDocs[i].doc).get("url")));
+                String title_tmp = ((String)(search.getDoc(results.scoreDocs[i].doc).get("title")));
+                if(url_tmp.contains("index.html") && flag == 0){
+                    s *= 2;
+                }
+                s *= 100/(url_tmp.length()+10)*(title_tmp.length()+10);
                 results.scoreDocs[i].score = (float) s;
                 prMap.put(i, s);
             }
@@ -254,7 +266,7 @@ public class THUServer extends HttpServlet{
         request.setAttribute("imgPaths", highlightURLs);
         request.setAttribute("contents", highlightContents);
         request.setAttribute("times", t2-t1);
-        request.setAttribute("queryString", queryString);
+        //request.setAttribute("queryString", queryString);
         request.getRequestDispatcher("/imageshow.jsp").forward(request,
                 response);
 

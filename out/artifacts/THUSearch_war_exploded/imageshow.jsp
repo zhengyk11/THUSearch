@@ -7,7 +7,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 //String imagePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
 //System.out.println("basePath:"+basePath);
 //System.out.println("imagePath:"+imagePath);
-String queryString = (String) request.getAttribute("queryString");
+String queryString = (String) request.getAttribute("currentQuery");
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
