@@ -1,5 +1,7 @@
 import net.paoding.analysis.analyzer.PaodingAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
@@ -12,8 +14,11 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.apache.lucene.util.Version.LUCENE_35;
 
@@ -53,10 +58,17 @@ public class THUIndexer {
             NodeList nodeList = doc.getElementsByTagName("doc");
             int num = nodeList.getLength();
 
+
+            HashSet<String> spellWords = new HashSet<>();
+
+            Pattern p = Pattern.compile("[a-z]+|[A-Z]+|[0-9]+");
+
             for(int i = 0;i < num;i++){
 
                 Node node = nodeList.item(i);
                 NamedNodeMap map = node.getAttributes();
+
+                String[] attr = new String[7];
 
                 Node title = map.getNamedItem("title");
                 Node url = map.getNamedItem("url");
@@ -66,6 +78,37 @@ public class THUIndexer {
                 Node anchor = map.getNamedItem("anchor");
                 Node strong = map.getNamedItem("strong");
 
+                attr[0] = title.getNodeValue();
+                attr[1] = h1.getNodeValue();
+                attr[2] = content.getNodeValue();
+                attr[3] = anchor.getNodeValue();
+                attr[4] = strong.getNodeValue();
+
+                //StringBuffer sb = new StringBuffer();
+
+
+                for(int j=0;j<5;j++) {
+
+                    StringReader reader = new StringReader(attr[j]);
+                    TokenStream ts = this.analyzer.tokenStream(attr[j], reader);
+
+                    TermAttribute termAtt = (TermAttribute) ts
+                            .addAttribute(TermAttribute.class);
+                    try {
+                        while (ts.incrementToken()) {
+                            //sb.append(termAtt.term());
+                            //sb.append("\n");
+                            //if(!spellWords.contains(termAtt.term()))
+
+                            Matcher m = p.matcher(termAtt.term());
+                            if(!m.find()) {
+                                spellWords.add(termAtt.term());
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 Field titleField = new Field( "title", title.getNodeValue(), Field.Store.YES, Field.Index.ANALYZED);
                 Field urlField = new Field( "url", url.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
@@ -92,10 +135,27 @@ public class THUIndexer {
                     System.out.println("process "+i);
                 }
             }
+
             //averageLength /= indexWriter.numDocs();
             //System.out.println("average length = "+averageLength);
             System.out.println("total "+indexWriter.numDocs()+" documents");
             indexWriter.close();
+
+
+            BufferedWriter fileWriter =
+                    new BufferedWriter(
+                            new OutputStreamWriter(
+                                    new FileOutputStream(
+                                            new File("input/spell.txt"))));
+            //HashSet hs = new HashSet(spellWords);
+            System.out.println("hs.size()" + spellWords.size());
+            Iterator<String> iterator=spellWords.iterator();
+            while(iterator.hasNext()){
+                //System.out.println(iterator.next());
+                fileWriter.write(iterator.next()+" ");
+            }
+
+            fileWriter.close();
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -28,7 +28,7 @@ public class THUSearcher {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public TopDocs searchQuery(Query query, int maxnum){
 
 		/*try {
@@ -62,7 +62,7 @@ public class THUSearcher {
 
         queryString += " " + sb.toString();*/
 
-        //return sb.toString();
+		//return sb.toString();
 
         /*StringReader r = new StringReader(queryString);
         IKSegmentation Ikseg= new IKSegmentation(r);
@@ -84,23 +84,23 @@ public class THUSearcher {
         queryString += " " + s;
 */
 
-        //String[] words = queryString.split("\\s+");
+		//String[] words = queryString.split("\\s+");
 
 
 
-        //Query query=MultiFieldQueryParser.parse(words, field, occ, analyzer);
-        //System.out.println("QueryParser :" + queryString);
+		//Query query=MultiFieldQueryParser.parse(words, field, occ, analyzer);
+		//System.out.println("QueryParser :" + queryString);
 
-        TopDocs topDocs = null;
-        try {
-            topDocs = searcher.search(query, maxnum);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		TopDocs topDocs = null;
+		try {
+			topDocs = searcher.search(query, maxnum);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-        return topDocs;
+		return topDocs;
 	}
-	
+
 	public Document getDoc(int docID){
 		try{
 			return searcher.doc(docID);
