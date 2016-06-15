@@ -163,7 +163,7 @@ public class THUServer extends HttpServlet{
          * */
         //MultiFieldQueryParser
 
-        //meanSearcher.setAccuracy(0.5);
+        meanSearcher.setAccuracy(0.65);
         int new_query_flag = 0;
         String[] querySplit = queryString.replaceAll(regex, "").split("[\\s]+");
 

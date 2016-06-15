@@ -23,6 +23,9 @@
     <script type="text/javascript" src="<%=basePath%>js/speech.js"></script>
     <link type="text/css" href="<%=basePath%>css/thu-show.css" rel="stylesheet"/>
     <link type="text/css" href="<%=basePath%>css/speech-input.css" rel="stylesheet"/>
+    <link type="text/css" href="<%=basePath%>css/extend.css" rel="stylesheet"/>
+    <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.3.min.js"></script>
+
 </head>
 
 <body>
@@ -35,19 +38,9 @@
         <label>
             <%--<input class="show-input" name="query" value="<%=currentQuery%>" type="text" size="70" />--%>
                 <div class="si-wrapper">
-
-                    <input id="index_input" value="<%=currentQuery%>" type="text" class="si-input" placeholder=""
-                           style="width: 440px;
-                              margin: 10px;margin-left: 0px;
-                              height: 40px;
-                              font-family: arial;
-                              padding-left: 5px;
-                              font-size: 12pt;
-                              color: #444;"
-                           name="query" size="50" >
-
-                    <button class="search-button" type="submit" style="display: none" name="Submit">THU Search</button>
-                    <button onclick="startDictation(this,event)" style="vertical-align: middle;margin: 10px ">
+                    <input id="index_input" value="<%=currentQuery%>" type="text" class="show-input" autocomplete="off" name="query" size="50">
+                    <button style="display: none"></button>
+                    <button onclick="startDictation(this,event)" style="vertical-align: middle;">
                         <img class="show-speech" src="<%=basePath%>image/micro.png">
                     </button>
                 </div>
@@ -55,6 +48,13 @@
         <label>
             <button class="show-button" type="submit" name="Submit">THU Search</button>
         </label>
+
+        <div style="text-align: center">
+            <div class="search_suggest" id="search_suggest" style="left: -121px;top:-4px;width:450px" >
+                <ul style="margin: 0px;padding: 0px;">
+                </ul>
+            </div>
+        </div>
     </form>
 </div>
 
@@ -116,6 +116,7 @@
 </div>
 </body>
 
+<script type="text/javascript" src="<%=basePath%>js/extend.js"></script>
 
 <style>
 

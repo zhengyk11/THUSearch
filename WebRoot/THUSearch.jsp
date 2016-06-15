@@ -27,16 +27,11 @@
 
     <form id="form1" name="form1" method="get" action="servlet/THUServer">
         <div class="si-wrapper">
-
-            <input id="index_input" type="text" placeholder=""
-                   class="search-input"
-                   autocomplete="off" name="query" size="50" >
-
+            <input id="index_input" type="text" class="search-input" autocomplete="off" name="query" size="50" >
             <button style="display: none"></button>
             <button onclick="startDictation(this,event)">
                 <img class="search-speech" src="image/micro.png">
             </button>
-
         </div>
 
         <button class="search-button" type="submit" name="Submit">THU Search</button>

@@ -10,7 +10,6 @@ import org.apache.lucene.search.spell.SpellChecker;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class DidYouMeanIndexer {
             throws IOException {
         Directory spellIndexDir = FSDirectory.open(new File(spellIndexPath));
         SpellChecker spellChecker = new SpellChecker(spellIndexDir);
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, new IKAnalyzer(true));
+        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, null);
         spellChecker.indexDictionary(new PlainTextDictionary(new File(idcFilePath)), config, false);
         // close
         spellIndexDir.close();
@@ -32,7 +31,7 @@ public class DidYouMeanIndexer {
         LuceneDictionary dict = new LuceneDictionary(oriIndex, fieldName);
         Directory spellIndexDir = FSDirectory.open(new File(spellIndexPath));
         spellChecker = new SpellChecker(spellIndexDir);
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, new IKAnalyzer(true));
+        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, null);
         spellChecker.indexDictionary(dict, config, true);
     }
     public static void main(String[] args){
