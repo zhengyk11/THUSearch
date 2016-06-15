@@ -330,7 +330,7 @@ public class THUServer extends HttpServlet{
         request.setAttribute("contents", highlightContents);
         request.setAttribute("times", t2-t1);
         //request.setAttribute("queryString", queryString);
-        request.getRequestDispatcher("/imageshow.jsp").forward(request,
+        request.getRequestDispatcher("/THUShow.jsp").forward(request,
                 response);
 
     }
