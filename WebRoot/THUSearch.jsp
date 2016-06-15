@@ -14,7 +14,9 @@
     <title>THU Search Engine</title>
     <link type="text/css" href="css/speech-input.css" rel="stylesheet"/>
     <link type="text/css" href="css/thu-search.css" rel="stylesheet"/>
+    <link type="text/css" href="css/extend.css" rel="stylesheet"/>
     <script type="text/javascript" src="js/speech.js"></script>
+    <script type="text/javascript" src="js/jquery-1.4.3.min.js"></script>
 
 </head>
 <body>
@@ -26,27 +28,32 @@
     <form id="form1" name="form1" method="get" action="servlet/THUServer">
         <div class="si-wrapper">
 
-            <input id="index_input" type="text" class="si-input" placeholder=""
-                   style="    width: 480px;
-                              margin: 10px;
-                              height: 40px;
-                              padding-left: 5px;
-                              font-family: arial;
-                              font-size: 12pt;
-                              color: #444;"
-                   name="query" size="50" >
+            <input id="index_input" type="text" placeholder=""
+                   class="search-input"
+                   autocomplete="off" name="query" size="50" >
 
-            <button class="search-button" type="submit" style="display: none" name="Submit">THU Search</button>
-            <button onclick="startDictation(this,event)" style="margin: 10px ">
+            <button style="display: none"></button>
+            <button onclick="startDictation(this,event)">
                 <img class="search-speech" src="image/micro.png">
             </button>
+
+        </div>
+
+        <button class="search-button" type="submit" name="Submit">THU Search</button>
+
+        <div style="text-align: center">
+            <div class="search_suggest" id="search_suggest">
+                <ul style="margin: 0px;padding: 0px;">
+                </ul>
+            </div>
         </div>
         <%--<input class="search-input" name="query" type="text" size="50" />--%>
 
-        <button class="search-button" type="submit" name="Submit">THU Search</button>
     </form>
 
 </div>
+
+<script type="text/javascript" src="js/extend.js"></script>
 
 </body>
 </html>
