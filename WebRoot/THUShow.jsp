@@ -20,6 +20,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><%=currentQuery.length()>8?currentQuery.substring(0,8)+"...":currentQuery%>_THU Search</title>
+    <script type="text/javascript" src="<%=basePath%>js/speech.js"></script>
 </head>
 
 <body>
@@ -30,7 +31,23 @@
             <img class="show-logo" src="<%=basePath%>image/thu1.png"/>
         </a>
         <label>
-            <input class="show-input" name="query" value="<%=currentQuery%>" type="text" size="70" />
+            <%--<input class="show-input" name="query" value="<%=currentQuery%>" type="text" size="70" />--%>
+                <div class="si-wrapper">
+
+                    <input id="index_input" value="<%=currentQuery%>" type="text" class="si-input" placeholder=""
+                           style="    width: 440px;
+                              margin: 10px;margin-left: 0px;
+                              height: 40px;
+                              font-family: arial;
+                              font-size: 12pt;
+                              color: #444;"
+                           name="query" size="50" >
+
+                    <button class="search-button" type="submit" style="display: none" name="Submit">THU Search</button>
+                    <button onclick="startDictation(this,event)" style="margin: 10px ">
+                        <img style="height: 30px;width: auto;padding-top: 7px;padding-bottom: 7px;vertical-align: middle;" src="<%=basePath%>image/micro.png">
+                    </button>
+                </div>
         </label>
         <label>
             <button class="show-button" type="submit" name="Submit">THU Search</button>
@@ -72,7 +89,9 @@
             <p><tr><h3>no such result</h3></tr></p>
             <%}; %>
         </Table>
+        <hr class="show-line">
     </div>
+
     <div class="show-page">
         <p>
             <%if(currentPage>1){ %>
@@ -178,5 +197,103 @@
 
     .show-page {
         padding-left: 140px;padding-bottom: 35px;
+    }
+
+    .si-wrapper {
+        display: inline-block;
+        position: relative;
+    }
+
+    .si-wrapper input {
+        margin: 0;
+    }
+
+    .si-wrapper button {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        height: 18px;
+        width: 18px;
+        margin: 0;
+        border: 0;
+        padding: 0;
+        background: none;
+        font: 0/0 a;
+    }
+
+    .si-btn{
+    }
+
+    .si-mic,
+    .si-mic:after,
+    .si-holder,
+    .si-holder:before,
+    .si-holder:after {
+        position: absolute;
+        background: #333;
+    }
+
+    /* Microphone icon */
+    .si-mic {
+        display: block;
+        height: 25%; /* 8px / 32px */
+        top: 9.375%; /* 3px / 32px */
+        left: 37.5%; /* 12px / 32px */
+        right: 37.5%; /* 12px / 32px */
+        -webkit-border-radius: 99px 99px 0 0;
+        -moz-border-radius: 99px 99px 0 0;
+        border-radius: 99px 99px 0 0;
+    }
+
+    .si-mic:before,
+    .si-mic:after,
+    .si-holder {
+        -webkit-border-radius: 0 0 99px 99px;
+        -moz-border-radius: 0 0 99px 99px;
+        border-radius: 0 0 99px 99px;
+    }
+
+    .si-mic:before {
+        position: absolute;
+        z-index: 1;
+        content: '';
+        width: 150%; /* 12px / 8px */
+        height: 137.5%; /* 11px / 8px */
+        top: 100%; /* 8px / 8px */
+        left: -25%; /* -2px / 8px */
+        background: #fff;
+    }
+
+    .si-mic:after {
+        z-index: 1;
+        content: '';
+        width: 100%; /* 10px / 10px */
+        height: 100%; /* 10px / 10px */
+        top: 110%; /* 11px / 10px */
+        left: 0;
+    }
+
+    .si-holder {
+        display: block;
+        height: 40.625%; /* 13px / 32px */
+        width: 50%; /* 16px / 32px */
+        left: 25%; /* 8px / 32px */
+        top: 37.5%; /* 12px / 32px */
+    }
+
+    .si-holder:after {
+        content: '';
+        width: 66.666%; /* 8px / 16px */
+        height: 18.182%; /* 2px / 13px */
+        bottom: -30.769%; /* -4px / 13px */
+        left: 16.667%; /* 2px / 16px */
+    }
+
+    .si-holder:before {
+        content: '';
+        width: 33.333%; /* 4px / 16px */
+        height: 27.273%; /* 3px / 13px */
+        top: 92.308%; /* 12px / 13px */
+        left: 33.333%; /* 4px / 16px */
     }
 </style>

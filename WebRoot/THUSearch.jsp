@@ -37,7 +37,7 @@
 
             <button class="search-button" type="submit" style="display: none" name="Submit">THU Search</button>
             <button onclick="startDictation(this,event)" style="margin: 10px ">
-                <img style="height: 30px;width: auto;padding-top:5px;vertical-align: middle;" src="image/micro.png">
+                <img style="height: 30px;width: auto;padding-top:5px;padding-bottom:5px;vertical-align: middle;" src="image/micro.png">
             </button>
         </div>
         <%--<input class="search-input" name="query" type="text" size="50" />--%>
