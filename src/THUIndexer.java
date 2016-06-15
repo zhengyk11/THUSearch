@@ -1,7 +1,5 @@
 import net.paoding.analysis.analyzer.PaodingAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
@@ -15,10 +13,6 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static org.apache.lucene.util.Version.LUCENE_35;
 
@@ -58,26 +52,30 @@ public class THUIndexer {
             NodeList nodeList = doc.getElementsByTagName("doc");
             int num = nodeList.getLength();
 
+            //HashSet<String> spellWords = new HashSet<>();
 
-            HashSet<String> spellWords = new HashSet<>();
-
-            Pattern p = Pattern.compile("[a-z]+|[A-Z]+|[0-9]+");
+            //Pattern p = Pattern.compile("[a-z]+|[A-Z]+|[0-9]+");
 
             for(int i = 0;i < num;i++){
 
                 Node node = nodeList.item(i);
                 NamedNodeMap map = node.getAttributes();
 
-                String[] attr = new String[7];
-
                 Node title = map.getNamedItem("title");
                 Node url = map.getNamedItem("url");
-                Node h1 = map.getNamedItem("h1");
                 Node pr = map.getNamedItem("pr");
                 Node content = map.getNamedItem("docContent");
                 Node anchor = map.getNamedItem("anchor");
+                Node h1 = map.getNamedItem("h1");
+                Node h2 = map.getNamedItem("h2");
+                Node h3 = map.getNamedItem("h3");
+                Node h4 = map.getNamedItem("h4");
+                Node h5 = map.getNamedItem("h5");
+                Node h6 = map.getNamedItem("h6");
                 Node strong = map.getNamedItem("strong");
 
+                //part1/2:获得spellchecker分词词库,重要代码不可删!
+                /*String[] attr = new String[7];
                 attr[0] = title.getNodeValue();
                 attr[1] = h1.getNodeValue();
                 attr[2] = content.getNodeValue();
@@ -108,25 +106,43 @@ public class THUIndexer {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }*/
+
+                String new_title = content.getNodeValue().length() > 20 ?
+                        content.getNodeValue().substring(0, 20) : content.getNodeValue();
+
+                if(title.getNodeValue().equals("DOCX")){
+                    title.setNodeValue(new_title + ".docx");
+                }else if(title.getNodeValue().equals("PDF")){
+                    title.setNodeValue(new_title + ".pdf");
                 }
 
                 Field titleField = new Field( "title", title.getNodeValue(), Field.Store.YES, Field.Index.ANALYZED);
                 Field urlField = new Field( "url", url.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
-                Field h1Field = new Field( "h1", h1.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
                 Field prField = new Field( "pr", pr.getNodeValue(),Field.Store.YES, Field.Index.NO);
                 Field contentField = new Field( "content" ,content.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
                 Field anchorField = new Field( "anchor" , anchor.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
+                Field h1Field = new Field( "h1", h1.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
+                Field h2Field = new Field( "h2", h2.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
+                Field h3Field = new Field( "h3", h3.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
+                Field h4Field = new Field( "h4", h4.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
+                Field h5Field = new Field( "h5", h5.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
+                Field h6Field = new Field( "h6", h6.getNodeValue(),Field.Store.YES, Field.Index.ANALYZED);
                 Field strongField  =   new  Field( "strong" , strong.getNodeValue() ,Field.Store.YES, Field.Index.ANALYZED);
-                //averageLength += title.getNodeValue().length();
 
                 Document document = new  Document();
 
                 document.add(titleField);
                 document.add(urlField);
-                document.add(h1Field);
                 document.add(prField);
                 document.add(contentField);
                 document.add(anchorField);
+                document.add(h1Field);
+                document.add(h2Field);
+                document.add(h3Field);
+                document.add(h4Field);
+                document.add(h5Field);
+                document.add(h6Field);
                 document.add(strongField);
 
                 indexWriter.addDocument(document);
@@ -136,13 +152,11 @@ public class THUIndexer {
                 }
             }
 
-            //averageLength /= indexWriter.numDocs();
-            //System.out.println("average length = "+averageLength);
             System.out.println("total "+indexWriter.numDocs()+" documents");
             indexWriter.close();
 
-
-            BufferedWriter fileWriter =
+            //part2/2:获得spellchecker分词词库,重要代码不可删!
+            /*BufferedWriter fileWriter =
                     new BufferedWriter(
                             new OutputStreamWriter(
                                     new FileOutputStream(
@@ -154,15 +168,15 @@ public class THUIndexer {
                 //System.out.println(iterator.next());
                 fileWriter.write(iterator.next()+" ");
             }
+            fileWriter.close();*/
 
-            fileWriter.close();
         }catch(Exception e){
             e.printStackTrace();
         }
     }
     public static void main(String[] args) {
         THUIndexer indexer=new THUIndexer("forIndex/index");
-        indexer.indexSpecialFile("input/new_data.xml");
+        indexer.indexSpecialFile("input/new_data_delete.xml");
         //indexer.saveGlobals("forIndex/global.txt");
     }
 }

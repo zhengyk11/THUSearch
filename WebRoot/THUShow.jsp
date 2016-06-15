@@ -6,8 +6,8 @@
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
     String currentQuery=(String) request.getAttribute("currentQuery");
     int currentPage=(Integer) request.getAttribute("currentPage");
-    String[] titles=(String[]) request.getAttribute("imgTags");
-    String[] urlPaths=(String[]) request.getAttribute("imgPaths");
+    String[] titles=(String[]) request.getAttribute("titles");
+    String[] urlPaths=(String[]) request.getAttribute("urls");
     String[] contents = (String[]) request.getAttribute("contents");
     int totalNum = (int) request.getAttribute("totalNum");
     long times = (long) request.getAttribute("times");
@@ -79,10 +79,10 @@
                         }
             %>
             <p>
-                <tr>
+                <tr><h3>
                     <a class="show-title" href="http://<%=urlPaths[i]%>" target="_blank">
                         <%=(currentPage-1)*10+i+1%>. <%=titles[i].length()>100 ? titles[i].substring(0,100):titles[i] %>
-                    </a>
+                    </a></h3>
                 </tr>
                 <p><tr>
                     <a class="show-content"><%=contents[i] == null|contents[i].length()<1 ? "":contents[i]+"..."%></a>

@@ -26,7 +26,7 @@ public class THUServer extends HttpServlet{
 
     public static final int PAGE_RESULT = 10;
     public static final String indexDir = "forIndex";
-    private String[] field = new String[]{"title","h1","anchor","content","strong","url"};
+    private String[] field = new String[]{"title","url","anchor","content","h1","h2","h3","h4","h5","h6","strong"};
     private THUSearcher search = null;
     private DidYouMeanSearcher meanSearcher = null;
 
@@ -118,6 +118,7 @@ public class THUServer extends HttpServlet{
         MultiFieldQueryParser parser = null;
         //url正则表达式
         String pattern = "([a-zA-Z0-9\\.\\-]+(\\:[a-zA-Z0-9\\.&amp;%\\$\\-]+)*@)?((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+\\.[a-zA-Z]{2,4})(\\:[0-9]+)?(/[^/][a-zA-Z0-9\\.\\,\\?\\'\\/\\+&amp;%\\$#\\=~_\\-@]*)*$";
+        String regex = "~|-|NOT|AND|OR|\\*|\\.|\\?|\\+|\\$|\\^|\\[|\\]|\\(|\\)|\\{|\\}|\\||\\/";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(queryString);
         int flag = 1;
@@ -137,11 +138,17 @@ public class THUServer extends HttpServlet{
             flag = 0;
             boosts.clear();
             boosts.put("title", 5.0f);
-            boosts.put("content", 0.1f);
-            boosts.put("strong", 0.3f);
-            boosts.put("h1", 0.5f);
-            boosts.put("anchor", 0.3f);
-            boosts.put("url", 10.0f);
+            boosts.put("url", 5.0f);
+            boosts.put("content", 0.2f);
+            boosts.put("anchor", 1.0f);
+            boosts.put("h1", 1.2f);
+            boosts.put("h2", 1.0f);
+            boosts.put("h3", 0.8f);
+            boosts.put("h4", 0.6f);
+            boosts.put("h5", 0.4f);
+            boosts.put("h6", 0.2f);
+            boosts.put("strong", 0.8f);
+
             parser = new MultiFieldQueryParser(
                     Version.LUCENE_35,
                     field,
@@ -158,7 +165,7 @@ public class THUServer extends HttpServlet{
 
         //meanSearcher.setAccuracy(0.5);
         int new_query_flag = 0;
-        String[] querySplit = queryString.split("[\\s]+");
+        String[] querySplit = queryString.replaceAll(regex, "").split("[\\s]+");
 
         String new_queryString = "";
         meanSearcher.setAccuracy(0.6);
@@ -205,7 +212,7 @@ public class THUServer extends HttpServlet{
         //被高亮文本前后加的标签前后缀
         Scorer scorer = null;//创建一个Scorer对象，传入一个Lucene的条件对象Query
         try {
-            String regex = "~|-|NOT|AND|OR|\\*|\\.|\\?|\\+|\\$|\\^|\\[|\\]|\\(|\\)|\\{|\\}|\\||\\/";
+
             scorer = new QueryScorer(new QueryParser(Version.LUCENE_35, "concent", new IKAnalyzer())
                     .parse(queryString.replaceAll(regex,"")));
             //scorer = new QueryScorer(parser.parse(queryString));
@@ -217,7 +224,7 @@ public class THUServer extends HttpServlet{
         //正式创建高亮器对象
         Highlighter highlighter = new Highlighter(formatter, scorer);
         //设置被高亮的文本返回的摘要的文本大小
-        Fragmenter fragmenter = new SimpleFragmenter(80);//默认是50个字符
+        Fragmenter fragmenter = new SimpleFragmenter(100);//默认是50个字符
         //让大小生效
         highlighter.setTextFragmenter(fragmenter);
 
@@ -234,6 +241,9 @@ public class THUServer extends HttpServlet{
                 String title_tmp = ((String)(search.getDoc(results.scoreDocs[i].doc).get("title")));
                 if(url_tmp.contains("index.html") && flag == 0){
                     s *= 2;
+                }
+                if(title_tmp.contains(".docx") | title_tmp.equals(".pdf")){
+                    s*=2;
                 }
                 s *= 100/(url_tmp.length()+10)*(title_tmp.length()+10);
                 results.scoreDocs[i].score = (float) s;
@@ -280,16 +290,8 @@ public class THUServer extends HttpServlet{
                         try {
                             highlightContents[i] = highlighter.getBestFragment(tokenStream, hcontent);
                             if(highlightContents[i] == null){
-                                highlightContents[i] = "";
+                                highlightContents[i] = hcontent.length()>100?hcontent.substring(0,100):hcontent;
                             }
-                            //highlightContents[i] = highlightContents[i].replace("华大","大");
-                        /*if(highlightContents[i] == null || highlightContents[i].length() < 10){
-                            if(hcontent.length() > 80) {
-                                highlightContents[i] = hcontent.substring(0,80);
-                            }else if(hcontent.length() < 2){
-                                highlightContents[i] = null;
-                            }
-                        }*/
                         } catch (InvalidTokenOffsetsException e) {
                             e.printStackTrace();
                         }
@@ -349,8 +351,8 @@ public class THUServer extends HttpServlet{
         request.setAttribute("totalNum", totalNum);
         request.setAttribute("currentQuery",queryString);
         request.setAttribute("currentPage", page);
-        request.setAttribute("imgTags", highlightTitles);
-        request.setAttribute("imgPaths", highlightURLs);
+        request.setAttribute("titles", highlightTitles);
+        request.setAttribute("urls", highlightURLs);
         request.setAttribute("contents", highlightContents);
         request.setAttribute("times", t2-t1);
         //request.setAttribute("queryString", queryString);
