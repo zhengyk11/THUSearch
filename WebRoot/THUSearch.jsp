@@ -14,6 +14,7 @@
     <title>THU Search Engine</title>
     <link type="text/css" href="css/speech-input.css" rel="stylesheet"/>
     <link type="text/css" href="css/thu-search.css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/speech.js"></script>
 
 </head>
 <body>
@@ -25,16 +26,8 @@
     <form id="form1" name="form1" method="get" action="servlet/THUServer">
         <div class="si-wrapper">
 
-            <script>
-                function inputDealer() {
-                    if (event.keyCode == 13) {
-                        form1.submit();
-                    }
-                }
-            </script>
-
-            <input id="index_input" type="text" onkeypress="inputDealer()" class="si-input" placeholder=""
-                   style="    width: 450px;
+            <input id="index_input" type="text" class="si-input" placeholder=""
+                   style="    width: 440px;
                               margin: 10px;
                               height: 40px;
                               font-family: arial;
@@ -42,19 +35,17 @@
                               color: #444;"
                    name="query" size="50" >
 
-            <button class="si-btn" style="margin: 10px;">
-                speech input
-                <span class="si-mic"></span>
-                <span class="si-holder"></span>
+            <button class="search-button" type="submit" style="display: none" name="Submit">THU Search</button>
+            <button onclick="startDictation(this,event)" style="margin: 10px ">
+                <img style="height: 30px;width: auto;padding-top:5px;vertical-align: middle;" src="image/micro.png">
             </button>
         </div>
-
         <%--<input class="search-input" name="query" type="text" size="50" />--%>
 
         <button class="search-button" type="submit" name="Submit">THU Search</button>
     </form>
 
 </div>
-<script type="text/javascript" src="js/speech-input.js"></script>
+
 </body>
 </html>

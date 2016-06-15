@@ -55,7 +55,7 @@
                 if(titles!=null && titles.length>0){
                     for(int i=0;i<titles.length;i++){
             %>
-            <p style="padding-bottom: 1px">
+            <p>
                 <tr>
                     <a class="show-title" href="http://<%=urlPaths[i]%>" target="_blank">
                         <%=(currentPage-1)*10+i+1%>. <%=titles[i].length()>100 ? titles[i].substring(0,100):titles[i] %>
@@ -108,14 +108,14 @@
     }
 
     .show-logo {
-        width: 145px;
-        height: 50px;
+        width: 148px;
+        height: 52px;
         vertical-align: middle;
-        padding-right: 5px;
+        padding-right: 2px;
     }
 
     .show-input {
-        width: 440px;
+        width: 500px;
         margin: 10px;
         margin-left: 0px;
         height: 36px;
