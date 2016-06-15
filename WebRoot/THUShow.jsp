@@ -21,6 +21,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><%=currentQuery.length()>8?currentQuery.substring(0,8)+"...":currentQuery%>_THU Search</title>
     <script type="text/javascript" src="<%=basePath%>js/speech.js"></script>
+    <link type="text/css" href="<%=basePath%>css/thu-show.css" rel="stylesheet"/>
+    <link type="text/css" href="<%=basePath%>css/speech-input.css" rel="stylesheet"/>
 </head>
 
 <body>
@@ -35,17 +37,18 @@
                 <div class="si-wrapper">
 
                     <input id="index_input" value="<%=currentQuery%>" type="text" class="si-input" placeholder=""
-                           style="    width: 440px;
+                           style="width: 440px;
                               margin: 10px;margin-left: 0px;
                               height: 40px;
                               font-family: arial;
+                              padding-left: 5px;
                               font-size: 12pt;
                               color: #444;"
                            name="query" size="50" >
 
                     <button class="search-button" type="submit" style="display: none" name="Submit">THU Search</button>
-                    <button onclick="startDictation(this,event)" style="margin: 10px ">
-                        <img style="height: 30px;width: auto;padding-top: 7px;padding-bottom: 7px;vertical-align: middle;" src="<%=basePath%>image/micro.png">
+                    <button onclick="startDictation(this,event)" style="vertical-align: middle;margin: 10px ">
+                        <img class="show-speech" src="<%=basePath%>image/micro.png">
                     </button>
                 </div>
         </label>
@@ -71,6 +74,9 @@
             <%
                 if(titles!=null && titles.length>0){
                     for(int i=0;i<titles.length;i++){
+                        if(urlPaths[i].endsWith("index.html")){
+                            urlPaths[i] = urlPaths[i].substring(0, urlPaths[i].length()-10);
+                        }
             %>
             <p>
                 <tr>
@@ -79,7 +85,7 @@
                     </a>
                 </tr>
                 <p><tr>
-                    <a class="show-content"><%=contents[i] == null ? "":contents[i]+"..."%></a>
+                    <a class="show-content"><%=contents[i] == null|contents[i].length()<1 ? "":contents[i]+"..."%></a>
                 </tr></p>
                 <tr>
                     <a class="show-url" href="http://<%=urlPaths[i]%>" target="_blank"><%=urlPaths[i].length()>70?urlPaths[i].substring(0,60)+"...":urlPaths[i]%></a>
@@ -112,188 +118,5 @@
 
 
 <style>
-    #Layer2 {
-        position:absolute;
-        left:29px;
-        top:80px;
-        width:648px;
-        height:585px;
-        z-index:2;
-    }
 
-    .show-layer1 {
-        width: 1000px;
-        padding-left: 0px;
-    }
-
-    .show-logo {
-        width: 148px;
-        height: 52px;
-        vertical-align: middle;
-        padding-right: 2px;
-    }
-
-    .show-input {
-        width: 500px;
-        margin: 10px;
-        margin-left: 0px;
-        height: 36px;
-        font-family: arial;
-        font-size: 10pt;
-        color: #444;
-    }
-
-    .show-button {
-        -webkit-appearance: none;
-        font-family: arial;
-        color: #444;
-        background-color: #f5f5f5;
-        border: 1px #e4e4e4;
-        font-weight: bold;
-        margin: 5px 0px;
-        font-size: 9pt;
-        padding: 13px;
-    }
-
-    .show-result {
-        width: 540px;
-        padding-left: 135px;
-        padding-top: 5px;
-    }
-
-    .num-and-time {
-        font-size: 13px;
-        color: #999;
-    }
-
-    .show-spell {
-        font-size: 18px;
-        color: #222;
-    }
-
-    .show-line {
-        margin: 0 -8px 16px -8px;background-color: rgba(0,0,0,0.07);border-width: 0;color: rgba(0,0,0,0.07);
-        height: 1px;margin-top: 22px;display: block; -webkit-margin-before: 0.5em;-webkit-margin-after: 0.5em;-webkit-margin-start: auto;
-        -webkit-margin-end: auto;border-style: inset;
-    }
-
-    .show-title {
-        color: -webkit-link;
-        text-decoration: underline;
-        cursor: auto;
-    }
-
-    .show-content {
-        margin: 0;padding: 0;list-style: none;font-size: 13px;color: #666;padding-bottom: 1px;
-    }
-
-    .show-url {
-        text-decoration: none; color: #008000;font-size: 13px;
-    }
-
-    .show-table {
-        left: 0px; width: 594px;padding-top: 5px;
-    }
-
-    .show-page {
-        padding-left: 140px;padding-bottom: 35px;
-    }
-
-    .si-wrapper {
-        display: inline-block;
-        position: relative;
-    }
-
-    .si-wrapper input {
-        margin: 0;
-    }
-
-    .si-wrapper button {
-        position: absolute;
-        top: 0;
-        right: 15px;
-        height: 18px;
-        width: 18px;
-        margin: 0;
-        border: 0;
-        padding: 0;
-        background: none;
-        font: 0/0 a;
-    }
-
-    .si-btn{
-    }
-
-    .si-mic,
-    .si-mic:after,
-    .si-holder,
-    .si-holder:before,
-    .si-holder:after {
-        position: absolute;
-        background: #333;
-    }
-
-    /* Microphone icon */
-    .si-mic {
-        display: block;
-        height: 25%; /* 8px / 32px */
-        top: 9.375%; /* 3px / 32px */
-        left: 37.5%; /* 12px / 32px */
-        right: 37.5%; /* 12px / 32px */
-        -webkit-border-radius: 99px 99px 0 0;
-        -moz-border-radius: 99px 99px 0 0;
-        border-radius: 99px 99px 0 0;
-    }
-
-    .si-mic:before,
-    .si-mic:after,
-    .si-holder {
-        -webkit-border-radius: 0 0 99px 99px;
-        -moz-border-radius: 0 0 99px 99px;
-        border-radius: 0 0 99px 99px;
-    }
-
-    .si-mic:before {
-        position: absolute;
-        z-index: 1;
-        content: '';
-        width: 150%; /* 12px / 8px */
-        height: 137.5%; /* 11px / 8px */
-        top: 100%; /* 8px / 8px */
-        left: -25%; /* -2px / 8px */
-        background: #fff;
-    }
-
-    .si-mic:after {
-        z-index: 1;
-        content: '';
-        width: 100%; /* 10px / 10px */
-        height: 100%; /* 10px / 10px */
-        top: 110%; /* 11px / 10px */
-        left: 0;
-    }
-
-    .si-holder {
-        display: block;
-        height: 40.625%; /* 13px / 32px */
-        width: 50%; /* 16px / 32px */
-        left: 25%; /* 8px / 32px */
-        top: 37.5%; /* 12px / 32px */
-    }
-
-    .si-holder:after {
-        content: '';
-        width: 66.666%; /* 8px / 16px */
-        height: 18.182%; /* 2px / 13px */
-        bottom: -30.769%; /* -4px / 13px */
-        left: 16.667%; /* 2px / 16px */
-    }
-
-    .si-holder:before {
-        content: '';
-        width: 33.333%; /* 4px / 16px */
-        height: 27.273%; /* 3px / 13px */
-        top: 92.308%; /* 12px / 13px */
-        left: 33.333%; /* 4px / 16px */
-    }
 </style>

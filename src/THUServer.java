@@ -1,14 +1,15 @@
-import net.paoding.analysis.analyzer.PaodingAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.highlight.Formatter;
 import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.util.Version;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,19 +27,13 @@ public class THUServer extends HttpServlet{
     public static final int PAGE_RESULT = 10;
     public static final String indexDir = "forIndex";
     private String[] field = new String[]{"title","h1","anchor","content","strong","url"};
-    //public static final String http = "http://";
     private THUSearcher search = null;
-    /*private SpellChecker spellchecker = null;
-    private Directory directory = null;*/
     private DidYouMeanSearcher meanSearcher = null;
-
-
 
     public THUServer(){
         super();
         search = new THUSearcher(indexDir + "/index");
         meanSearcher = new DidYouMeanSearcher("spellIndex/", null, null);
-        //search.loadGlobals(indexDir + "/global.txt");
     }
 
     public ScoreDoc[] showList(ScoreDoc[] results, List<Map.Entry<Integer, Double>> infoIDs, int page){
@@ -136,7 +131,7 @@ public class THUServer extends HttpServlet{
                     new String[]{"url"},
                 /*new StandardAnalyzer(Version.LUCENE_35),
                 boosts );*/
-                    new PaodingAnalyzer(),
+                    search.analyzer,
                     boosts);
         } else {
             flag = 0;
@@ -152,7 +147,7 @@ public class THUServer extends HttpServlet{
                     field,
                 /*new StandardAnalyzer(Version.LUCENE_35),
                 boosts );*/
-                    new PaodingAnalyzer(),
+                    search.analyzer,
                     boosts);
             //queryString += "~";
         }
@@ -210,9 +205,11 @@ public class THUServer extends HttpServlet{
         //被高亮文本前后加的标签前后缀
         Scorer scorer = null;//创建一个Scorer对象，传入一个Lucene的条件对象Query
         try {
-            scorer = new QueryScorer(parser.parse(queryString.replaceAll("~|-|NOT|AND|OR|\\*|\\.|\\?|\\+|\\$|\\^|\\[|\\]|\\(|\\)|\\{|\\}|\\||\\/","")));
+            String regex = "~|-|NOT|AND|OR|\\*|\\.|\\?|\\+|\\$|\\^|\\[|\\]|\\(|\\)|\\{|\\}|\\||\\/";
+            scorer = new QueryScorer(new QueryParser(Version.LUCENE_35, "concent", new IKAnalyzer())
+                    .parse(queryString.replaceAll(regex,"")));
             //scorer = new QueryScorer(parser.parse(queryString));
-            System.out.println("123:"+queryString);
+            //System.out.println("123:"+queryString);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -276,22 +273,49 @@ public class THUServer extends HttpServlet{
                             e.printStackTrace();
                         }
                     }*/
-                    if (hcontent != null) {
-                        TokenStream tokenStream = search.analyzer.tokenStream("content", new StringReader(hcontent));
+                    //highlightContents[i] = hcontent;
+                    highlightTitles[i] = htitle;
+                    if (hcontent != null && hcontent.length() > 1 ) {
+                        TokenStream tokenStream = new IKAnalyzer().tokenStream("content", new StringReader(hcontent));
                         try {
                             highlightContents[i] = highlighter.getBestFragment(tokenStream, hcontent);
-                            if(highlightContents[i] == null || highlightContents[i].length() < 10){
-                                if(hcontent.length() > 80) {
-                                    highlightContents[i] = hcontent.substring(0,80);
-                                }else if(hcontent.length() < 2){
-                                    highlightContents[i] = null;
-                                }
+                            if(highlightContents[i] == null){
+                                highlightContents[i] = "";
                             }
+                            //highlightContents[i] = highlightContents[i].replace("华大","大");
+                        /*if(highlightContents[i] == null || highlightContents[i].length() < 10){
+                            if(hcontent.length() > 80) {
+                                highlightContents[i] = hcontent.substring(0,80);
+                            }else if(hcontent.length() < 2){
+                                highlightContents[i] = null;
+                            }
+                        }*/
                         } catch (InvalidTokenOffsetsException e) {
                             e.printStackTrace();
                         }
                     }
-                    if (htitle != null) {
+                    else{
+                        highlightContents[i] = "";
+                    }
+
+                    /*TokenStream title_tokenStream = new PaodingAnalyzer().tokenStream("title", new StringReader(htitle));
+                    try {
+                        highlightTitles[i] = highlighter.getBestFragment(tokenStream, htitle);
+                        if(highlightTitles[i]== null || highlightTitles[i].length()<1){
+                            highlightTitles[i]="";
+                        }
+                        *//*if(highlightContents[i] == null || highlightContents[i].length() < 10){
+                            if(hcontent.length() > 80) {
+                                highlightContents[i] = hcontent.substring(0,80);
+                            }else if(hcontent.length() < 2){
+                                highlightContents[i] = null;
+                            }
+                        }*//*
+                    } catch (InvalidTokenOffsetsException e) {
+                        e.printStackTrace();
+                    }*/
+                    //}
+                    /*if (htitle != null) {
                         TokenStream tokenStream = search.analyzer.tokenStream("title", new StringReader(htitle));
                         try {
                             highlightTitles[i] = highlighter.getBestFragment(tokenStream, htitle);
@@ -301,7 +325,7 @@ public class THUServer extends HttpServlet{
                         } catch (InvalidTokenOffsetsException e) {
                             e.printStackTrace();
                         }
-                    }
+                    }*/
                 }
 
             } else {

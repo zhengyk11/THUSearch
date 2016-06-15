@@ -27,9 +27,10 @@
         <div class="si-wrapper">
 
             <input id="index_input" type="text" class="si-input" placeholder=""
-                   style="    width: 440px;
+                   style="    width: 480px;
                               margin: 10px;
                               height: 40px;
+                              padding-left: 5px;
                               font-family: arial;
                               font-size: 12pt;
                               color: #444;"
@@ -37,7 +38,7 @@
 
             <button class="search-button" type="submit" style="display: none" name="Submit">THU Search</button>
             <button onclick="startDictation(this,event)" style="margin: 10px ">
-                <img style="height: 30px;width: auto;padding-top:5px;padding-bottom:5px;vertical-align: middle;" src="image/micro.png">
+                <img class="search-speech" src="image/micro.png">
             </button>
         </div>
         <%--<input class="search-input" name="query" type="text" size="50" />--%>
