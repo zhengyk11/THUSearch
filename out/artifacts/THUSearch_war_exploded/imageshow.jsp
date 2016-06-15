@@ -15,6 +15,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><%=queryString.length()>8?queryString.substring(0,8)+"...":queryString%>_THU Search</title>
+
     <style type="text/css">
         <!--
         #Layer1 {
@@ -56,13 +57,26 @@
     &lt;%&ndash;<img src="image/thu.PNG" style="padding-left: 5px;padding-top: 5px;height: 32px;width: 110px" alt="logo"/>&ndash;%&gt;
 </div>--%>
 
-<div style="width: 1000px;padding-left: 0px;">
+<div style="width: 1500px;padding-left: 0px;">
+
+    <%--<link type="text/css" href="css/speech-input.css" rel="stylesheet"/>
+
+    <div class="si-wrapper">
+        <input type="text" class="si-input" placeholder="" style="width: 400px;margin: 10px;margin-left: 0px;height: 40px;font-family: arial;font-size: 12pt;color: #444;" name="query" value="<%=currentQuery%>" type="text" size="50" >
+        <button class="si-btn" style="margin: 10px;">
+            speech input
+            <span class="si-mic"></span>
+            <span class="si-holder"></span>
+        </button>
+    </div>
+    <script type="text/javascript" src="speech-input.js"></script>--%>
     <form id="form1" name="form1" method="get" action="THUServer" >
         <label>
-            <img src="<%=basePath%>image/thu1.png" alt="thu" style="width:145px;height:50px;vertical-align:middle;padding-right: 5px" />
+            <a href="http://localhost:8080/imagesearch.jsp"><img src="<%=basePath%>image/thu1.png" alt="thu" style="width:145px;height:50px;vertical-align:middle;padding-right: 5px" /></a>
         </label>
         <label>
             <input style="width: 440px;margin: 10px;margin-left: 0px;height: 35px;font-family: arial;font-size: 10pt;color: #444;" name="query" value="<%=currentQuery%>" type="text" size="70" />
+
         </label>
         <label>
             <button style="-webkit-appearance: none;font-family: arial;
@@ -132,7 +146,6 @@
 <!--<div id="Layer3" style="top: 839px; left: 27px;">
 	
 </div>-->
-
 
 
 </body>

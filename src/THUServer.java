@@ -206,11 +206,14 @@ public class THUServer extends HttpServlet{
         }
 
         //创建高亮器对象：需要一些辅助类对象作为参数
-        Formatter formatter = new SimpleHTMLFormatter("<span style='color:#dd4b39;'>", "</span>");
+        Formatter formatter = new SimpleHTMLFormatter("<span style=\"color:#dd4b39;\">", "</span>");
         //被高亮文本前后加的标签前后缀
         Scorer scorer = null;//创建一个Scorer对象，传入一个Lucene的条件对象Query
         try {
             scorer = new QueryScorer(parser.parse(queryString.replaceAll("~|-|NOT|AND|OR|\\*|\\.|\\?|\\+|\\$|\\^|\\[|\\]|\\(|\\)|\\{|\\}|\\||\\/","")));
+            //scorer = new QueryScorer(parser.parse(queryString));
+            System.out.println("123:"+queryString);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
