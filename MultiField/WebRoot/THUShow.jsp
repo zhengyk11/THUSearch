@@ -51,7 +51,7 @@
         </label>
 
         <div style="text-align: center">
-            <div class="search_suggest" id="search_suggest" style="left: -121px;top:-4px;width:450px" >
+            <div class="search_suggest" id="search_suggest" style="left: -568px;top:-6px;width:480px"<%--style="left: -247px;top:-4px;width:479px"--%> >
                 <ul style="margin: 0px;padding: 0px;">
                 </ul>
             </div>
@@ -119,7 +119,7 @@
     </div>
 </div>
 <div align="center" id="inform" style="display: none">
-    <iframe id="frame" class="show-iframe" width="550" height="700" src="" scrolling="yes"  hspace="-100" vspace="-150"></iframe>
+    <iframe id="frame" class="show-iframe" width=1100 height="1500" src="" scrolling="yes"  hspace="-100" vspace="-150"></iframe>
 </div>
 </body>
 <script type="text/javascript" src="<%=basePath%>js/extend.js"></script>

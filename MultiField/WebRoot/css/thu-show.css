@@ -14,10 +14,12 @@
     width: 100%;
     z-index: 301;
     top: -1px;
+    height:60px;
     /*min-width: 1000px;*/
     background: #fff;
     border-bottom: 1px solid #ebebeb;
     padding-left: 0px;
+    padding-top: 6px;
 }
 
 
@@ -113,5 +115,5 @@
 .show-iframe {
     position:fixed;
     top:50px;
-    left:730px;
+    left:820px;
 }
