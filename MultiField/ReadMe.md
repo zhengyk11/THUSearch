@@ -24,7 +24,5 @@ THU Search
   - 语音输入
   - 鼠标悬停预览
   - 查询提示
-
-- 待实现功能
-  - 不同的score算法(如bm25等)
+  - 使用MultiField类
 
