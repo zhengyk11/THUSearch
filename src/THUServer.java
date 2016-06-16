@@ -240,12 +240,12 @@ public class THUServer extends HttpServlet{
                 String url_tmp = ((String)(search.getDoc(results.scoreDocs[i].doc).get("url")));
                 String title_tmp = ((String)(search.getDoc(results.scoreDocs[i].doc).get("title")));
                 if(url_tmp.contains("index.html") && flag == 0){
-                    s *= 2;
+                    s *= 2.0;
                 }
-                if(title_tmp.contains(".docx") | title_tmp.equals(".pdf")){
-                    s*=2;
+                if(title_tmp.contains(".docx") || title_tmp.equals(".pdf")){
+                    s*=2.0;
                 }
-                s *= 100/(url_tmp.length()+10)*(title_tmp.length()+10);
+                s *= 100.0/((url_tmp.length()+10)*(title_tmp.length()+10));
                 results.scoreDocs[i].score = (float) s;
                 prMap.put(i, s);
             }
