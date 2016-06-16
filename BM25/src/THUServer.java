@@ -1,4 +1,5 @@
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
@@ -225,22 +226,39 @@ public class THUServer extends HttpServlet{
         //让大小生效
         highlighter.setTextFragmenter(fragmenter);
 
+
         Map<Integer, ScoreDoc> resultMap = new HashMap<>();
-        for(int i=0;i<11;i++) {
-            Term term = new Term(field[i], queryString);
-            Query query = new SimpleQuery(term, search.avgLength[i]);
-            query.setBoost(boosts.get(field[i]));
-            TopDocs res = search.searchQuery(query, 50000);
-            for(int j=0;j<res.scoreDocs.length;j++){
-                int id = res.scoreDocs[j].doc;
-                if(resultMap.containsKey(id)){
-                    resultMap.get(id).score = res.scoreDocs[j].score + resultMap.get(id).score;
-                    resultMap.put(res.scoreDocs[j].doc, resultMap.get(id));
-                }else{
-                    resultMap.put(res.scoreDocs[j].doc, res.scoreDocs[j]);
+
+        StringReader reader = new StringReader(queryString);
+        TokenStream ts = search.analyzer.tokenStream(queryString, reader);
+        TermAttribute termAtt = (TermAttribute) ts
+                .addAttribute(TermAttribute.class);
+        try {
+            while (ts.incrementToken()) {
+                //sb.append(termAtt.term());
+                //sb.append("\n");
+                //if(!spellWords.contains(termAtt.term()))
+                for(int i=0;i<11;i++) {
+                    Term term = new Term(field[i], termAtt.term());
+                    Query query = new SimpleQuery(term, search.avgLength[i]);
+                    query.setBoost(boosts.get(field[i]));
+                    TopDocs res = search.searchQuery(query, 50000);
+                    for(int j=0;j<res.scoreDocs.length;j++){
+                        int id = res.scoreDocs[j].doc;
+                        if(resultMap.containsKey(id)){
+                            resultMap.get(id).score = res.scoreDocs[j].score + resultMap.get(id).score;
+                            resultMap.put(res.scoreDocs[j].doc, resultMap.get(id));
+                        }else{
+                            resultMap.put(res.scoreDocs[j].doc, res.scoreDocs[j]);
+                        }
+                    }
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
 
         List<Map.Entry<Integer, ScoreDoc>> resultList = new ArrayList<>(resultMap.entrySet());
 
@@ -257,16 +275,16 @@ public class THUServer extends HttpServlet{
             Map<Integer, Double> prMap = new HashMap<>();
             for(int i = 0;i < totalNum;i++){
                 ScoreDoc scoreTmp = resultList.get(i).getValue();
-                double s = scoreTmp.score + scoreTmp.score * 10000 * Double.parseDouble(search.getDoc(scoreTmp.doc).get("pr"));
+                double s = scoreTmp.score + scoreTmp.score * 5000 * Double.parseDouble(search.getDoc(scoreTmp.doc).get("pr"));
                 String url_tmp = ((String)(search.getDoc(scoreTmp.doc).get("url")));
                 String title_tmp = ((String)(search.getDoc(scoreTmp.doc).get("title")));
                 if(url_tmp.contains("index.html")){
-                    s *= 10;
+                    s *= 2;
                 }
                 if(title_tmp.contains(".docx") || title_tmp.equals(".pdf")){
-                    s*=10;
+                    s*=2;
                 }
-                s *= 25.0/((url_tmp.length()+5)*(title_tmp.length()+5));
+                s *= 100.0/((url_tmp.length()+10)*(title_tmp.length()+10));
                 scoreTmp.score = (float) s;
                 prMap.put(i, s);
             }
