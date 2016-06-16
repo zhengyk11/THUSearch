@@ -285,16 +285,22 @@ public class THUServer extends HttpServlet{
                     }*/
                     //highlightContents[i] = hcontent;
 
+                    if(htitle.contains(".docx")){
+                        htitle = "[DOCX] "+ htitle;
+                    }else if(htitle.contains(".pdf")){
+                        htitle = "[PDF] "+ htitle;
+                    }
+
                     if(htitle.length() < 20){
                         highlightTitles[i] = htitle;
                     }else{
+
                         Pattern pp = Pattern.compile("[a-zA-Z]+");
                         Matcher mm = pp.matcher(htitle);
 
-                        if(mm.find()) {
-                            highlightTitles[i] = htitle.substring(0,20);
-                        }
-                        else{
+                        if (mm.find()) {
+                            highlightTitles[i] = htitle.substring(0, 20);
+                        } else {
                             highlightTitles[i] = htitle;
                         }
                     }

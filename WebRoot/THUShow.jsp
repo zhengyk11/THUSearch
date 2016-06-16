@@ -59,6 +59,7 @@
     </form>
 </div>
 
+
 <div id="Layer2">
     <div class="show-result" id="result-div">
         <a class="num-and-time">THU Search Engine为您找到相关结果约<%=totalNum%>个结果,耗时<%=times%>毫秒</a>
@@ -82,7 +83,7 @@
             <p>
                 <tr>
                     <a class="show-title"  href="http://<%=urlPaths[i]%>" target="_blank">
-                       <b> <%=(currentPage-1)*10+i+1%>. <%=titles[i].length()>100 ? titles[i].substring(0,100):titles[i] %></b>
+                       <b> <%=(currentPage-1)*10+i+1%>. <%=(titles[i] != null && titles[i].length()>100) ? titles[i].substring(0,100):titles[i] %></b>
                     </a>
                     <a style="padding-left: 2px">- </a>
                     <a href="http://<%=urlPaths[i]%>" class="show-content" onmouseover="showInform('<%=urlPaths[i]%>')" onmouseout="hiddenInform()">网页快照</a>
@@ -118,7 +119,7 @@
     </div>
 </div>
 <div align="center" id="inform" style="display: none">
-    <iframe id="frame" class="show-iframe" width="550" height="800" src="http://<%=urlPaths[0]%>" scrolling="yes"  hspace="-100" vspace="-150"></iframe>
+    <iframe id="frame" class="show-iframe" width="550" height="700" src="" scrolling="yes"  hspace="-100" vspace="-150"></iframe>
 </div>
 </body>
 <script type="text/javascript" src="<%=basePath%>js/extend.js"></script>

@@ -8,9 +8,18 @@
 }
 
 .show-layer1 {
-    width: 1000px;
+    position: fixed;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    z-index: 301;
+    top: -1px;
+    /*min-width: 1000px;*/
+    background: #fff;
+    border-bottom: 1px solid #ebebeb;
     padding-left: 0px;
 }
+
 
 .show-logo {
     width: 148px;
@@ -28,6 +37,7 @@
     padding-left: 5px;
     font-size: 12pt;
     color: #444;
+    padding-right: 30px;
 }
 
 .show-button {
@@ -95,7 +105,6 @@
 .show-speech {
     height: 30px;
     width: auto;
-    /*background-color:white;*/
     padding-top: 7px;
     padding-bottom: 7px;
     vertical-align: middle;
@@ -103,6 +112,6 @@
 
 .show-iframe {
     position:fixed;
-    top:-20px;
+    top:50px;
     left:730px;
 }
