@@ -284,7 +284,22 @@ public class THUServer extends HttpServlet{
                         }
                     }*/
                     //highlightContents[i] = hcontent;
-                    highlightTitles[i] = htitle;
+
+                    if(htitle.length() < 20){
+                        highlightTitles[i] = htitle;
+                    }else{
+                        Pattern pp = Pattern.compile("[a-zA-Z]+");
+                        Matcher mm = pp.matcher(htitle);
+
+                        if(mm.find()) {
+                            highlightTitles[i] = htitle.substring(0,20);
+                        }
+                        else{
+                            highlightTitles[i] = htitle;
+                        }
+                    }
+
+
                     if (hcontent != null && hcontent.length() > 1 ) {
                         TokenStream tokenStream = new IKAnalyzer().tokenStream("content", new StringReader(hcontent));
                         try {

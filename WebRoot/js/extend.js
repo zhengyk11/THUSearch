@@ -11,15 +11,17 @@ function oSearchSuggest(searchFuc){
     var key = "";
     var init = function(){
         input.bind('keyup',sendKeyWord);
+        //input.bind('',sendKeyWord);
         input.bind('blur',function(){setTimeout(hideSuggest,100);})
     }
     var hideSuggest = function(){
         suggestWrap.hide();
     }
 
+    var old_input = $.trim(input.val());
+
     //发送请求，根据关键字到后台查询
     var sendKeyWord = function(event){
-
 
         //键盘选择下拉项
         if(suggestWrap.css('display')=='block'&&event.keyCode == 38||event.keyCode == 40){
@@ -30,6 +32,9 @@ function oSearchSuggest(searchFuc){
                     if(prevLi.length>0){
                         prevLi.addClass('hover');
                         input.val(prevLi.html());
+                    }
+                    else{
+                        input.val(old_input);
                     }
                 }else{
                     var last = suggestWrap.find('li:last');

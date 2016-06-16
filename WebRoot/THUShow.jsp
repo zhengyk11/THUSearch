@@ -25,6 +25,7 @@
     <link type="text/css" href="<%=basePath%>css/speech-input.css" rel="stylesheet"/>
     <link type="text/css" href="<%=basePath%>css/extend.css" rel="stylesheet"/>
     <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.3.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>js/preview.js"></script>
 
 </head>
 
@@ -79,10 +80,12 @@
                         }
             %>
             <p>
-                <tr><h3>
-                    <a class="show-title" href="http://<%=urlPaths[i]%>" target="_blank">
-                        <%=(currentPage-1)*10+i+1%>. <%=titles[i].length()>100 ? titles[i].substring(0,100):titles[i] %>
-                    </a></h3>
+                <tr>
+                    <a class="show-title"  href="http://<%=urlPaths[i]%>" target="_blank">
+                       <b> <%=(currentPage-1)*10+i+1%>. <%=titles[i].length()>100 ? titles[i].substring(0,100):titles[i] %></b>
+                    </a>
+                    <a style="padding-left: 2px">- </a>
+                    <a href="http://<%=urlPaths[i]%>" class="show-content" onmouseover="showInform('<%=urlPaths[i]%>')" onmouseout="hiddenInform()">网页快照</a>
                 </tr>
                 <p><tr>
                     <a class="show-content"><%=contents[i] == null|contents[i].length()<1 ? "":contents[i]+"..."%></a>
@@ -114,10 +117,9 @@
         </p>
     </div>
 </div>
+<div align="center" id="inform" style="display: none">
+    <iframe id="frame" class="show-iframe" width="550" height="800" src="http://<%=urlPaths[0]%>" scrolling="yes"  hspace="-100" vspace="-150"></iframe>
+</div>
 </body>
-
 <script type="text/javascript" src="<%=basePath%>js/extend.js"></script>
-
-<style>
-
-</style>
+</html>
